@@ -1,0 +1,28 @@
+package com.jonathangomz.economy21.controller;
+
+import com.jonathangomz.economy21.model.Dtos.CreateServiceDto;
+import com.jonathangomz.economy21.model.Service;
+import com.jonathangomz.economy21.service.ServiceManager;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+
+@RestController
+@RequestMapping("/services")
+public class ServicesController {
+    private final ServiceManager serviceManager;
+
+    public ServicesController(ServiceManager serviceManager) {
+        this.serviceManager = serviceManager;
+    }
+
+    @GetMapping()
+    public ArrayList<Service> GetServices() {
+        return serviceManager.getServices();
+    }
+
+    @PostMapping()
+    public Service CreateService(@RequestBody CreateServiceDto dto) {
+        return serviceManager.AddService(dto);
+    }
+}
