@@ -1,15 +1,31 @@
 package com.jonathangomz.economy21.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.jonathangomz.economy21.model.Account;
+import com.jonathangomz.economy21.model.Dtos.CreateAccountDto;
+import com.jonathangomz.economy21.service.AccountService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountController {
 
+    private final AccountService accountService;
+
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
     @GetMapping()
-    public String sayHello() {
-        return "Hello, welcome to the Economy21 application!";
+    public ArrayList<Account> GetAccounts() {
+        return accountService.GetAccounts();
+    }
+
+    @PostMapping()
+    public Account CreateAccount(@RequestBody CreateAccountDto dto) {
+        var userId = UUID.randomUUID().toString();
+        return accountService.AddAccount(dto, userId);
     }
 }
