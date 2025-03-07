@@ -3,6 +3,7 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.Dtos.CreateAccountDto;
 import com.jonathangomz.economy21.service.AccountService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,6 +22,11 @@ public class AccountController {
     @GetMapping()
     public ArrayList<Account> GetAccounts() {
         return accountService.GetAccounts();
+    }
+
+    @GetMapping("{accountId}")
+    public Account GetAccount(@PathParam("accountId") UUID accountId) {
+        return accountService.GetAccount(accountId);
     }
 
     @PostMapping()
