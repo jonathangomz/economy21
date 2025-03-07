@@ -1,4 +1,4 @@
-package com.jonathangomz.economy21.model.Dtos;
+package com.jonathangomz.economy21.model.dtos;
 
 // TODO: Add jakarta validations
 public class CreateAccountDto {

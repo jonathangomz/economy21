@@ -1,8 +1,8 @@
 package com.jonathangomz.economy21.service;
 
 import com.jonathangomz.economy21.model.Account;
-import com.jonathangomz.economy21.model.Dtos.CreateAccountDto;
-import com.jonathangomz.economy21.model.Dtos.UpdateAccountDto;
+import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
+import com.jonathangomz.economy21.model.dtos.UpdateAccountDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

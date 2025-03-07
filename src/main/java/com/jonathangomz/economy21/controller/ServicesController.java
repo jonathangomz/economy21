@@ -1,6 +1,6 @@
 package com.jonathangomz.economy21.controller;
 
-import com.jonathangomz.economy21.model.Dtos.CreateServiceDto;
+import com.jonathangomz.economy21.model.dtos.CreateServiceDto;
 import com.jonathangomz.economy21.model.Service;
 import com.jonathangomz.economy21.service.ServiceManager;
 import org.springframework.web.bind.annotation.*;

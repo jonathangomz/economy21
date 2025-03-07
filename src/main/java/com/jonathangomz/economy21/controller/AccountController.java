@@ -1,7 +1,7 @@
 package com.jonathangomz.economy21.controller;
 
 import com.jonathangomz.economy21.model.Account;
-import com.jonathangomz.economy21.model.Dtos.CreateAccountDto;
+import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.service.AccountService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.jonathangomz.economy21.service;
 
-import com.jonathangomz.economy21.model.Dtos.CreateServiceDto;
+import com.jonathangomz.economy21.model.dtos.CreateServiceDto;
 import com.jonathangomz.economy21.model.Service;
 
 import java.util.ArrayList;

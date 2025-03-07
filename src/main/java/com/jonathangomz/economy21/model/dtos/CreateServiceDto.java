@@ -1,4 +1,4 @@
-package com.jonathangomz.economy21.model.Dtos;
+package com.jonathangomz.economy21.model.dtos;
 
 import com.jonathangomz.economy21.model.enums.PaymentMethod;
 import com.jonathangomz.economy21.model.enums.RecurrenceType;
