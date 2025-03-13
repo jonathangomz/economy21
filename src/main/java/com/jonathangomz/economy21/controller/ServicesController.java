@@ -21,6 +21,16 @@ public class ServicesController {
         return serviceManager.getServices();
     }
 
+    @GetMapping("repo")
+    public Iterable<Service> GetServicesFromRepo() {
+        return serviceManager.getServicesFromRepo();
+    }
+
+    @PostMapping("repo")
+    public Service CreateServiceFromRepo(@RequestBody CreateServiceDto createServiceDto) {
+        return serviceManager.createService(createServiceDto);
+    }
+
     @PostMapping()
     public Service CreateService(@RequestBody CreateServiceDto dto) {
         return serviceManager.AddService(dto);

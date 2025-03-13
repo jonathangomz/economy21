@@ -2,12 +2,40 @@ package com.jonathangomz.economy21.service;
 
 import com.jonathangomz.economy21.model.dtos.CreateServiceDto;
 import com.jonathangomz.economy21.model.Service;
+import com.jonathangomz.economy21.repository.ServicesRepository;
 
 import java.util.ArrayList;
 
 @org.springframework.stereotype.Service
 public class ServiceManager {
     private final ArrayList<Service> services = new ArrayList<>();
+    private final ServicesRepository servicesRepository;
+
+    private ServiceManager(ServicesRepository servicesRepository) {
+        this.servicesRepository = servicesRepository;
+    }
+
+    public Iterable<Service> getServicesFromRepo() {
+        return this.servicesRepository.findAll();
+    }
+
+    public Service createService(CreateServiceDto dto) {
+        var service = new Service();
+        service.setName(dto.name);
+        service.setNotes(dto.notes);
+        service.setPrice(dto.price);
+        service.setStartDate(dto.startDate);
+        service.setCurrentPaymentDate(dto.startDate);
+        service.setRecurrenceType(dto.recurrenceType);
+        service.setInterval(dto.interval);
+        service.setPaymentMethod(dto.paymentMethod);
+        service.setAccountId(dto.accountId);
+
+        // Update payment date if needed
+        service.calculateNextPaymentDate();
+
+        return this.servicesRepository.save(service);
+    }
 
     public ArrayList<Service> getServices() {
         // TODO[think]: where do I recalculate the next payment date
