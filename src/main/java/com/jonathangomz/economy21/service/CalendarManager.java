@@ -1,8 +1,10 @@
 package com.jonathangomz.economy21.service;
 
 import com.jonathangomz.economy21.model.CalendarEvent;
+import com.jonathangomz.economy21.model.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -14,7 +16,10 @@ public class CalendarManager {
     }
 
     public List<CalendarEvent> getMonthServices(LocalDate date) {
-        return serviceManager.getServices()
+        var services = new ArrayList<Service>();
+        serviceManager.getServices().forEach(services::add);
+
+        return services
                 .stream()
                 .filter(s -> s.getCurrentPaymentDate()
                         .getMonth()

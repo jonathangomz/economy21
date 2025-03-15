@@ -3,6 +3,7 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.model.dtos.CreateServiceDto;
 import com.jonathangomz.economy21.model.Service;
 import com.jonathangomz.economy21.service.ServiceManager;
+import jakarta.websocket.server.PathParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,22 +18,17 @@ public class ServicesController {
     }
 
     @GetMapping()
-    public ArrayList<Service> GetServices() {
-        return serviceManager.getServices();
-    }
-
-    @GetMapping("repo")
-    public Iterable<Service> GetServicesFromRepo() {
+    public Iterable<Service> GetServices() {
         return serviceManager.getServicesFromRepo();
     }
 
-    @PostMapping("repo")
-    public Service CreateServiceFromRepo(@RequestBody CreateServiceDto createServiceDto) {
-        return serviceManager.createService(createServiceDto);
+    @GetMapping("{serviceId}")
+    public Service GetSingleService(@PathVariable("serviceId") Long id) {
+        return serviceManager.getService(id);
     }
 
     @PostMapping()
-    public Service CreateService(@RequestBody CreateServiceDto dto) {
-        return serviceManager.AddService(dto);
+    public Service CreateServiceFromRepo(@RequestBody CreateServiceDto createServiceDto) {
+        return serviceManager.createService(createServiceDto);
     }
 }

@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,7 +36,7 @@ public class Service {
     private LocalDate startDate = LocalDate.now();
 
     @Column(nullable = false)
-    private LocalDate currentPaymentDate;
+    private LocalDate currentPaymentDate = startDate;
 
     @Column(nullable = false, columnDefinition = "varchar(255) default 'MONTH'")
     @Enumerated(EnumType.STRING)
@@ -68,13 +65,6 @@ public class Service {
 
     @Column()
     private LocalDateTime deletedAt;
-
-    @PrePersist
-    private void setDefaults() {
-        if (currentPaymentDate == null) {
-            currentPaymentDate = startDate;
-        }
-    }
 
     public LocalDate calculateNextPaymentDate() {
         if (currentPaymentDate.isBefore(LocalDate.now())) {
