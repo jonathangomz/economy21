@@ -1,5 +1,7 @@
 package com.jonathangomz.economy21.repository;
 
+import com.jonathangomz.economy21.model.Service;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
@@ -17,6 +19,9 @@ public interface CrudRepository<T, ID> extends Repository<T, ID> {
     boolean existsById(ID id);
 
     Iterable<T> findAll();
+
+    @Query("SELECT s FROM Service s WHERE s.deletedAt IS NULL")
+    Iterable<Service> findAllActive();
 
     Iterable<T> findAllById(Iterable<ID> ids);
 

@@ -3,10 +3,7 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.model.dtos.CreateServiceDto;
 import com.jonathangomz.economy21.model.Service;
 import com.jonathangomz.economy21.service.ServiceManager;
-import jakarta.websocket.server.PathParam;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/services")
@@ -19,7 +16,7 @@ public class ServicesController {
 
     @GetMapping()
     public Iterable<Service> GetServices() {
-        return serviceManager.getServicesFromRepo();
+        return serviceManager.getServices();
     }
 
     @GetMapping("{serviceId}")
@@ -30,5 +27,10 @@ public class ServicesController {
     @PostMapping()
     public Service CreateServiceFromRepo(@RequestBody CreateServiceDto createServiceDto) {
         return serviceManager.createService(createServiceDto);
+    }
+
+    @DeleteMapping("{serviceId}")
+    public void DeleteService(@PathVariable("serviceId") Long id) {
+        this.serviceManager.deleteService(id);
     }
 }

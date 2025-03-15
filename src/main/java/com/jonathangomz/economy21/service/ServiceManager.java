@@ -15,10 +15,6 @@ public class ServiceManager {
         this.servicesRepository = servicesRepository;
     }
 
-    public Iterable<Service> getServicesFromRepo() {
-        return this.servicesRepository.findAll();
-    }
-
     public Service createService(CreateServiceDto dto) {
         var service = new Service();
         service.setName(dto.name);
@@ -39,7 +35,7 @@ public class ServiceManager {
 
     public Iterable<Service> getServices() {
         // TODO[think]: where do I recalculate the next payment date
-        var services = this.servicesRepository.findAll();
+        var services = this.servicesRepository.findAllActive();
         services.forEach(Service::calculateNextPaymentDate);
         return services;
     }
@@ -53,5 +49,9 @@ public class ServiceManager {
             throw new ResourceNotFound("Service not found");
         }
         return service;
+    }
+
+    public void deleteService(Long serviceId) {
+        this.servicesRepository.deleteById(serviceId);
     }
 }
