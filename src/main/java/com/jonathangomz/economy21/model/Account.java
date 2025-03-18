@@ -32,7 +32,8 @@ public class Account {
     @Column(nullable = false)
     private AccountType type;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private List<Movement> movements;
 
     @Column(length = 100, nullable = false)

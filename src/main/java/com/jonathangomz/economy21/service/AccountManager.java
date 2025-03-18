@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.service;
 
+import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.repository.AccountRepository;
@@ -23,6 +24,8 @@ public class AccountManager {
         account.setType(dto.getType());
         account.setOwner(userId);
 
+        // TODO: create initial movement to set the total
+
         return this.accountRepository.save(account);
     }
 
@@ -34,14 +37,29 @@ public class AccountManager {
         var accounts = new ArrayList<Account>();
         this.getAccounts().forEach(accounts::add);
 
-        return accounts
+        var account = accounts
                 .stream()
                 .filter(a -> a.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
+
+        if(account.isEmpty()) {
+            throw new ResourceNotFound("Account not found");
+        }
+
+        return account.get();
     }
 
     public void RemoveAccount(UUID id) {
         this.accountRepository.deleteById(id);
+    }
+
+    public Account updateAccount(UUID id, Account dto) {
+        var account = this.getAccount(id);
+        account.setName(dto.getName());
+        // TODO: Remove when using MovementListeners
+        account.setTotal(dto.getTotal());
+        account.setType(dto.getType());
+        return this.accountRepository.save(account);
+
     }
 }

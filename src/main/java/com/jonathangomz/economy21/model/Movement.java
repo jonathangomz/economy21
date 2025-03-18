@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,7 @@ public class Movement {
 
     @ManyToMany
     @JoinTable(
+            name = "movements_tags",
             joinColumns = @JoinColumn(name = "movement_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
@@ -49,9 +51,8 @@ public class Movement {
     @Column(nullable = false)
     private boolean online = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @Column(name = "account_id", nullable = false)
+    private UUID accountId;
 
     @CreationTimestamp
     @Column(updatable = false)
