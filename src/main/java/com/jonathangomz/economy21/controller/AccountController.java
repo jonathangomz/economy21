@@ -2,36 +2,34 @@ package com.jonathangomz.economy21.controller;
 
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
-import com.jonathangomz.economy21.service.AccountService;
-import jakarta.websocket.server.PathParam;
+import com.jonathangomz.economy21.service.AccountManager;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
 
-    private final AccountService accountService;
+    private final AccountManager accountManager;
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
+    public AccountController(AccountManager accountService) {
+        this.accountManager = accountService;
     }
 
     @GetMapping()
-    public ArrayList<Account> GetAccounts() {
-        return accountService.GetAccounts();
+    public Iterable<Account> GetAccounts() {
+        return this.accountManager.getAccounts();
     }
 
     @GetMapping("{accountId}")
-    public Account GetAccount(@PathParam("accountId") UUID accountId) {
-        return accountService.GetAccount(accountId);
+    public Account GetAccount(@PathVariable UUID accountId) {
+        return this.accountManager.getAccount(accountId);
     }
 
     @PostMapping()
     public Account CreateAccount(@RequestBody CreateAccountDto dto) {
-        var userId = UUID.randomUUID().toString();
-        return accountService.AddAccount(dto, userId);
+        var owner = "jonathan";
+        return this.accountManager.AddAccount(dto, owner);
     }
 }

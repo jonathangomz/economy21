@@ -16,8 +16,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@SQLDelete(sql = "UPDATE service SET deleted_at = NOW() WHERE id = ?")
+@Entity(name = "services")
+@SQLDelete(sql = "UPDATE services SET deleted_at = NOW() WHERE id = ?")
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
