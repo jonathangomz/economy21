@@ -3,6 +3,7 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.CreateMovementDto;
 import com.jonathangomz.economy21.service.MovementManager;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class MovementsController {
     }
 
     @PostMapping
-    public Movement addMovement(@PathVariable UUID accountId, @RequestBody CreateMovementDto dto) {
+    public Movement addMovement(@PathVariable UUID accountId, @RequestBody @Valid CreateMovementDto dto) {
         return this.movementManager.createMovement(accountId, dto);
     }
 

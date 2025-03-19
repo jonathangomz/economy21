@@ -3,6 +3,7 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.service.AccountManager;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class AccountController {
     }
 
     @PostMapping()
-    public Account createAccount(@RequestBody CreateAccountDto dto) {
+    public Account createAccount(@RequestBody @Valid CreateAccountDto dto) {
         var owner = "jonathan";
         return this.accountManager.AddAccount(dto, owner);
     }
