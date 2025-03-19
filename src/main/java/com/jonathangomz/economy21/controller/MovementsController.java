@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-// TODO: Rename methods to lowerCamelCase
 @RestController
 @RequestMapping("/accounts/{accountId}/movements")
 public class MovementsController {
@@ -19,12 +18,12 @@ public class MovementsController {
     }
 
     @GetMapping
-    public Iterable<Movement> GetMovements(@PathVariable UUID accountId) {
+    public Iterable<Movement> getMovements(@PathVariable UUID accountId) {
         return this.movementManager.getMovements(accountId);
     }
 
     @PostMapping
-    public Movement AddMovement(@PathVariable UUID accountId, @RequestBody CreateMovementDto dto) {
+    public Movement addMovement(@PathVariable UUID accountId, @RequestBody CreateMovementDto dto) {
         return this.movementManager.createMovement(accountId, dto);
     }
 

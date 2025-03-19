@@ -18,17 +18,17 @@ public class AccountController {
     }
 
     @GetMapping()
-    public Iterable<Account> GetAccounts() {
+    public Iterable<Account> getAccounts() {
         return this.accountManager.getAccounts();
     }
 
     @GetMapping("{accountId}")
-    public Account GetAccount(@PathVariable UUID accountId) {
+    public Account getAccount(@PathVariable UUID accountId) {
         return this.accountManager.getAccount(accountId);
     }
 
     @PostMapping()
-    public Account CreateAccount(@RequestBody CreateAccountDto dto) {
+    public Account createAccount(@RequestBody CreateAccountDto dto) {
         var owner = "jonathan";
         return this.accountManager.AddAccount(dto, owner);
     }

@@ -15,22 +15,22 @@ public class ServicesController {
     }
 
     @GetMapping()
-    public Iterable<Service> GetServices() {
+    public Iterable<Service> getServices() {
         return serviceManager.getServices();
     }
 
     @GetMapping("{serviceId}")
-    public Service GetSingleService(@PathVariable("serviceId") Long id) {
+    public Service getService(@PathVariable("serviceId") Long id) {
         return serviceManager.getService(id);
     }
 
     @PostMapping()
-    public Service CreateServiceFromRepo(@RequestBody CreateServiceDto createServiceDto) {
+    public Service createService(@RequestBody CreateServiceDto createServiceDto) {
         return serviceManager.createService(createServiceDto);
     }
 
     @DeleteMapping("{serviceId}")
-    public void DeleteService(@PathVariable("serviceId") Long id) {
+    public void deleteService(@PathVariable("serviceId") Long id) {
         this.serviceManager.deleteService(id);
     }
 }
