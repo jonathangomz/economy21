@@ -6,6 +6,7 @@ import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -20,12 +21,9 @@ public class AccountManager {
     public Account AddAccount(CreateAccountDto dto, String userId) {
         var account = new Account();
         account.setName(dto.getName());
-        account.setTotal(dto.getTotal());
+        account.setTotal(BigDecimal.ZERO);
         account.setType(dto.getType());
         account.setOwner(userId);
-
-        // TODO: create initial movement to set the total
-
         return this.accountRepository.save(account);
     }
 
