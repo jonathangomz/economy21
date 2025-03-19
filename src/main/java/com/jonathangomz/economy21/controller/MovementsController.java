@@ -2,12 +2,12 @@ package com.jonathangomz.economy21.controller;
 
 import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.CreateMovementDto;
-import com.jonathangomz.economy21.service.AccountManager;
 import com.jonathangomz.economy21.service.MovementManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+// TODO: Rename methods to lowerCamelCase
 @RestController
 @RequestMapping("/accounts/{accountId}/movements")
 public class MovementsController {
@@ -26,5 +26,10 @@ public class MovementsController {
     @PostMapping
     public Movement AddMovement(@PathVariable UUID accountId, @RequestBody CreateMovementDto dto) {
         return this.movementManager.createMovement(accountId, dto);
+    }
+
+    @DeleteMapping("{movementId}")
+    public void deleteMovement(@PathVariable UUID accountId, @PathVariable Long movementId) {
+        this.movementManager.deleteMovement(accountId, movementId);
     }
 }

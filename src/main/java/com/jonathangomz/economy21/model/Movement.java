@@ -18,7 +18,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "movements")
-@SQLDelete(sql = "UPDATE movements SET deleted_at = NOW() WHERE id = ?")
 public class Movement {
 
     @Id
@@ -61,7 +60,4 @@ public class Movement {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    @Column
-    private LocalDateTime deletedAt;
 }

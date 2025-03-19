@@ -1,11 +1,13 @@
 package com.jonathangomz.economy21.service;
 
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
+import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.CreateMovementDto;
 import com.jonathangomz.economy21.repository.MovementRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,15 +22,15 @@ public class MovementManager {
     }
 
     public Iterable<Movement> getMovements(UUID accountId) {
-        var movements = this.movementRepository.findAllByAccountIdAndDeletedAtIsNull(accountId);
+        var movements = this.movementRepository.findAllByAccountId(accountId);
         if(movements == null) {
             return List.of();
         }
         return movements;
     }
 
-    public Movement getMovement(Long id) {
-        var movement = this.movementRepository.findById(id);
+    public Movement getMovement(UUID accountId, Long id) {
+        var movement = this.movementRepository.findByAccountIdAndId(accountId, id);
         if(movement.isEmpty()) {
             throw new ResourceNotFound("Movement not found");
         }
@@ -53,11 +55,23 @@ public class MovementManager {
         var savedMovement = this.movementRepository.save(movement);
 
         // Update account total
-        // TODO: Improve using MovementListener
-        account.setTotal(account.getTotal().add(movement.getAmount()));
-        this.accountManager.updateAccount(account.getId(), account);
+        this.updateAccountTotal(account, movement.getAmount());
 
         // Return the saved movement
         return savedMovement;
     }
+
+    public void deleteMovement(UUID accountId, Long id) {
+        var movement = this.getMovement(accountId, id);
+        this.movementRepository.deleteById(movement.getId());
+
+        var account = this.accountManager.getAccount(accountId);
+        updateAccountTotal(account, movement.getAmount().negate());
+    }
+
+    private void updateAccountTotal(Account account, BigDecimal amountChange) {
+        account.setTotal(account.getTotal().add(amountChange));
+        this.accountManager.updateAccount(account.getId(), account);
+    }
+
 }
