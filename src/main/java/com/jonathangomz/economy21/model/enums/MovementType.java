@@ -10,5 +10,5 @@ public enum MovementType {
     RESIDENT_PAYMENT,
     REFUND,
     CREDIT,
-    GOALS;
+    GOALS
 }
