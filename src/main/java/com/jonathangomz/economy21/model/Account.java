@@ -26,6 +26,7 @@ public class Account {
     @Column(length = 100, nullable = false)
     private String name;
 
+    // TODO[linked_2]: Add 0 by default
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal total;
 
@@ -54,12 +55,14 @@ public class Account {
     @Column
     private LocalDateTime deletedAt;
 
+    // TODO[linked_1]: Add this field to the AccountCreditInformation class
     private BigDecimal currentMonthPayment = null;
 
     public List<Movement> getMovements() {
         return movements == null ? List.of() : movements;
     }
 
+    // TODO[linked_1]: Add this field to the AccountCreditInformation class
     public BigDecimal getCurrentMonthPayment() {
         // TODO: Update column on AccountCreditInformation
         if(creditInformation == null) {

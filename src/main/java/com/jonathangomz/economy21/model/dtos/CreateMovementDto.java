@@ -27,6 +27,7 @@ public class CreateMovementDto {
     private String commerce;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    // TODO: Do not allow add a date greater than today
     private LocalDate date = LocalDate.now();
 
     @NotBlank(message = "Title is required")

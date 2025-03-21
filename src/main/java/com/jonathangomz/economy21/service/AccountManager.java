@@ -23,9 +23,11 @@ public class AccountManager {
         this.accountCreditInformationRepository = accountCreditInformationRepository;
     }
 
+    // TODO: rename it to addAccount
     public Account AddAccount(CreateAccountDto dto, String userId) {
         var account = new Account();
         account.setName(dto.getName());
+        // TODO[linked_2]: remove setTotal
         account.setTotal(BigDecimal.ZERO);
         account.setType(dto.getType());
         account.setOwner(userId);
@@ -47,11 +49,14 @@ public class AccountManager {
         return this.accountRepository.save(account);
     }
 
+    // TODO: Should not return any movements
     public Iterable<Account> getAccounts() {
         return accountRepository.findAllActive();
     }
 
+    // TODO: Should return only n number of movements. Max by default 5.
     public Account getAccount(UUID id) {
+        // TODO: Implement StreamSupport.stream for better performance
         var accounts = new ArrayList<Account>();
         this.getAccounts().forEach(accounts::add);
 

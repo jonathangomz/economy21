@@ -45,6 +45,7 @@ public class MovementManager {
         // Search the account
         var account = this.accountManager.getAccount(accountId);
 
+        // TODO: tags are being null
         // Map the movement from the dto
         var movement = new Movement();
         movement.setType(dto.getType());
@@ -70,6 +71,7 @@ public class MovementManager {
         var movement = this.getMovement(accountId, id);
         this.movementRepository.deleteById(movement.getId());
 
+        // Update account total
         var account = this.accountManager.getAccount(accountId);
         updateAccountTotal(account, movement.getAmount().negate());
     }

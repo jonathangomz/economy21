@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// TODO: need to be linked to an owner/user
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
