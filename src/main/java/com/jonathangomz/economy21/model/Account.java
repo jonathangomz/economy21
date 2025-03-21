@@ -39,8 +39,9 @@ public class Account {
     @Column(length = 100, nullable = false)
     private String owner;
 
-//    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private CreditAccountInformation creditAccountInformation;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "credit_information_id", referencedColumnName = "id", unique = true, columnDefinition = "BIGINT DEFAULT NULL")
+    private AccountCreditInformation creditInformation;
 
     @Column(updatable = false)
     @CreationTimestamp

@@ -2,7 +2,10 @@ package com.jonathangomz.economy21.service;
 
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
+import com.jonathangomz.economy21.model.AccountCreditInformation;
+import com.jonathangomz.economy21.model.dtos.AddCreditInformationDto;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
+import com.jonathangomz.economy21.repository.AccountCreditInformationRepository;
 import com.jonathangomz.economy21.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +16,11 @@ import java.util.UUID;
 @Service
 public class AccountManager {
     private final AccountRepository accountRepository;
+    private final AccountCreditInformationRepository accountCreditInformationRepository;
 
-    public AccountManager(AccountRepository accountRepository) {
+    public AccountManager(AccountRepository accountRepository, AccountCreditInformationRepository accountCreditInformationRepository) {
         this.accountRepository = accountRepository;
+        this.accountCreditInformationRepository = accountCreditInformationRepository;
     }
 
     public Account AddAccount(CreateAccountDto dto, String userId) {
@@ -24,6 +29,21 @@ public class AccountManager {
         account.setTotal(BigDecimal.ZERO);
         account.setType(dto.getType());
         account.setOwner(userId);
+        return this.accountRepository.save(account);
+    }
+
+    public Account addCreditInformation(UUID accountId, AddCreditInformationDto dto) {
+        var account = this.getAccount(accountId);
+
+        var creditInformation = new AccountCreditInformation();
+        creditInformation.setCreditLimit(dto.getCreditLimit());
+        creditInformation.setCutoffDay(dto.getCutoffDay());
+        creditInformation.setIntervalPaymentLimit(dto.getIntervalPaymentLimit());
+        creditInformation.setAccountId(account.getId());
+
+        var saved = this.accountCreditInformationRepository.save(creditInformation);
+        account.setCreditInformation(saved);
+
         return this.accountRepository.save(account);
     }
 

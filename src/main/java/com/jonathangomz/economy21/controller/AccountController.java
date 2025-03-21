@@ -1,6 +1,9 @@
 package com.jonathangomz.economy21.controller;
 
+import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
+import com.jonathangomz.economy21.model.AccountCreditInformation;
+import com.jonathangomz.economy21.model.dtos.AddCreditInformationDto;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.model.dtos.MovementTemplate;
 import com.jonathangomz.economy21.service.AccountManager;
@@ -42,5 +45,19 @@ public class AccountController {
 
         // TODO: Missing initial movement on returned JSON. But total is being changed correctly.
         return this.accountManager.getAccount(newAccount.getId());
+    }
+
+    @PostMapping("{accountId}/credit")
+    public Account addCreditInformation(@PathVariable UUID accountId, @RequestBody @Valid AddCreditInformationDto dto) {
+        return this.accountManager.addCreditInformation(accountId, dto);
+    }
+
+    @GetMapping("{accountId}/credit")
+    public AccountCreditInformation getCreditInformation(@PathVariable UUID accountId) {
+        var account = this.accountManager.getAccount(accountId);
+        if(account.getCreditInformation() == null) {
+            throw new ResourceNotFound("Credit information not found");
+        }
+        return account.getCreditInformation();
     }
 }
