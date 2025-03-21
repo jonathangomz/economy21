@@ -54,7 +54,28 @@ public class Account {
     @Column
     private LocalDateTime deletedAt;
 
+    private BigDecimal currentMonthPayment = null;
+
     public List<Movement> getMovements() {
         return movements == null ? List.of() : movements;
+    }
+
+    public BigDecimal getCurrentMonthPayment() {
+        // TODO: Update column on AccountCreditInformation
+        if(creditInformation == null) {
+            return null;
+        }
+
+        var nextCutoffDate = this.creditInformation.getNextCutoffDate();
+        var previousCutoffDate = nextCutoffDate.minusMonths(1);
+
+        return movements
+                .stream()
+                .filter(m ->
+                        m.getDate().isAfter(previousCutoffDate) &&
+                        m.getDate().isBefore(nextCutoffDate) &&
+                        m.getAmount().compareTo(BigDecimal.ZERO) < 0)
+                .map(Movement::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
