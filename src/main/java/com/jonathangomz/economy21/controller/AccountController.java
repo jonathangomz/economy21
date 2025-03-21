@@ -3,6 +3,7 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.AccountCreditInformation;
+import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.AddCreditInformationDto;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.model.dtos.MovementTemplate;
@@ -11,6 +12,7 @@ import com.jonathangomz.economy21.service.MovementManager;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -41,10 +43,14 @@ public class AccountController {
         var newAccount = this.accountManager.AddAccount(dto, owner);
 
         var initialMovementTemplate = MovementTemplate.generateInitialMovement(dto.getTotal());
-        this.movementManager.createMovement(newAccount.getId(), initialMovementTemplate);
+        var savedMovement = this.movementManager.createMovement(newAccount.getId(), initialMovementTemplate);
 
-        // TODO: Missing initial movement on returned JSON. But total is being changed correctly.
-        return this.accountManager.getAccount(newAccount.getId());
+        // Not exactly the best solution but working by now
+        var list = new ArrayList<Movement>();
+        list.add(savedMovement);
+        newAccount.setMovements(list);
+
+        return newAccount;
     }
 
     @PostMapping("{accountId}/credit")
