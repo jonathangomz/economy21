@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 @Service
 public class MovementManager {
@@ -26,7 +27,10 @@ public class MovementManager {
         if(movements == null) {
             return List.of();
         }
-        return movements;
+
+        return StreamSupport.stream(movements.spliterator(), false)
+                .sorted((m1, m2) -> m2.getDate().compareTo(m1.getDate()))
+                .toList();
     }
 
     public Movement getMovement(UUID accountId, Long id) {
