@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -34,4 +35,24 @@ public class AccountCreditInformation {
 
     @Column(name = "account_id", nullable = false)
     private UUID accountId;
+
+    private LocalDate nextCutoffDate;
+    private LocalDate nextPaymentLimitDate;
+
+    public LocalDate getNextCutoffDate() {
+        var currentMonthCutoffDate = LocalDate.now().withDayOfMonth(this.cutoffDay);
+        if(currentMonthCutoffDate.isBefore(LocalDate.now())) {
+            return currentMonthCutoffDate.plusMonths(1);
+        }
+        return currentMonthCutoffDate;
+    }
+
+    public LocalDate getNextPaymentLimitDate() {
+        var currentMonthCutoffDate = LocalDate.now().withDayOfMonth(this.cutoffDay);
+        var currentMonthPaymentLimitDate = currentMonthCutoffDate.plusDays(this.intervalPaymentLimit);
+        if(currentMonthPaymentLimitDate.isBefore(LocalDate.now())) {
+            return currentMonthCutoffDate.plusMonths(1).plusDays(this.intervalPaymentLimit);
+        }
+        return currentMonthPaymentLimitDate;
+    }
 }
