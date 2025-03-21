@@ -23,6 +23,11 @@ public class MovementsController {
         return this.movementManager.getMovements(accountId);
     }
 
+    @GetMapping("{movementId}")
+    public Movement getMovements(@PathVariable UUID accountId, @PathVariable long movementId) {
+        return this.movementManager.getMovement(accountId, movementId);
+    }
+
     @PostMapping
     public Movement addMovement(@PathVariable UUID accountId, @RequestBody @Valid CreateMovementDto dto) {
         return this.movementManager.createMovement(accountId, dto);
