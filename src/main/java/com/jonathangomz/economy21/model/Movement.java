@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,9 @@ public class Movement {
 
     @Column(length = 100, nullable = false)
     private String commerce;
+
+    @Column(nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
+    private LocalDate date;
 
     @Column(length = 100, nullable = false)
     private String title;

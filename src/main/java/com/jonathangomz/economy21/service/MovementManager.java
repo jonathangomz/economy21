@@ -45,6 +45,7 @@ public class MovementManager {
         var movement = new Movement();
         movement.setType(dto.getType());
         movement.setCommerce(dto.getCommerce());
+        movement.setDate(dto.getDate());
         movement.setTitle(dto.getTitle());
         movement.setDescription(dto.getDescription());
         movement.setAmount(dto.getAmount());
@@ -73,5 +74,4 @@ public class MovementManager {
         account.setTotal(account.getTotal().add(amountChange));
         this.accountManager.updateAccount(account.getId(), account);
     }
-
 }
