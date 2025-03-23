@@ -49,6 +49,7 @@ public class MovementManager {
         // Map the movement from the dto
         var movement = new Movement();
         movement.setType(dto.getType());
+        movement.setSubtype(dto.getSubtype());
         movement.setCommerce(dto.getCommerce());
         movement.setDate(dto.getDate());
         movement.setTitle(dto.getTitle());

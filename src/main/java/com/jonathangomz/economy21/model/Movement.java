@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.model;
 
+import com.jonathangomz.economy21.model.enums.MovementSubtype;
 import com.jonathangomz.economy21.model.enums.MovementType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,9 @@ public class Movement {
     @Column(nullable = false)
     private MovementType type;
 
+    @Column(nullable = false)
+    private MovementSubtype subtype;
+
     @ManyToMany
     @JoinTable(
             name = "movements_tags",
@@ -53,12 +57,12 @@ public class Movement {
     @Column(nullable = false)
     private boolean online = false;
 
-    @Column(name = "account_id", nullable = false)
-    private UUID accountId;
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "credit_information_id", referencedColumnName = "id", unique = true, columnDefinition = "BIGINT DEFAULT NULL")
     private MovementCreditInformation creditInformation;
+
+    @Column(name = "account_id", nullable = false)
+    private UUID accountId;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -67,4 +71,11 @@ public class Movement {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public BigDecimal getAmount() {
+        if(this.type == MovementType.CREDIT) {
+            return this.amount;
+        }
+        return this.amount.negate();
+    }
 }

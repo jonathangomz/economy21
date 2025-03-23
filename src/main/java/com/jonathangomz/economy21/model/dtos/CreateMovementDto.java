@@ -1,7 +1,9 @@
 package com.jonathangomz.economy21.model.dtos;
 
+import com.jonathangomz.economy21.model.enums.MovementSubtype;
 import com.jonathangomz.economy21.model.enums.MovementType;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,8 +19,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateMovementDto {
+    // TODO: Add enum validations
     @NotNull(message = "Movement type is required")
     private MovementType type;
+
+    // TODO: Add enum validations
+    @NotNull(message = "Movement subtype is required")
+    private MovementSubtype subtype;
 
     // TODO: Add list of tags comma separated
 
@@ -37,6 +44,7 @@ public class CreateMovementDto {
     private String description = null;
 
     @NotNull(message = "Amount is required")
+    @Min(value = 0, message = "Amount must be greater than or equal to zero")
     private BigDecimal amount;
 
     private boolean online = false;
