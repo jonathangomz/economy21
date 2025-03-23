@@ -33,9 +33,6 @@ public class AccountCreditInformation {
     @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 20")
     private int intervalPaymentLimit = 20;
 
-    @Column(name = "account_id", nullable = false)
-    private UUID accountId;
-
     private LocalDate nextCutoffDate;
     private LocalDate nextPaymentLimitDate;
 

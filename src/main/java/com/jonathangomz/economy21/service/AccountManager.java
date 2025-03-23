@@ -41,7 +41,6 @@ public class AccountManager {
         creditInformation.setCreditLimit(dto.getCreditLimit());
         creditInformation.setCutoffDay(dto.getCutoffDay());
         creditInformation.setIntervalPaymentLimit(dto.getIntervalPaymentLimit());
-        creditInformation.setAccountId(account.getId());
 
         var saved = this.accountCreditInformationRepository.save(creditInformation);
         account.setCreditInformation(saved);
