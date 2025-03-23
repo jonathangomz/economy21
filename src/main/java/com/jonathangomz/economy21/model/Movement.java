@@ -56,6 +56,10 @@ public class Movement {
     @Column(name = "account_id", nullable = false)
     private UUID accountId;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "credit_information_id", referencedColumnName = "id", unique = true, columnDefinition = "BIGINT DEFAULT NULL")
+    private MovementCreditInformation creditInformation;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
