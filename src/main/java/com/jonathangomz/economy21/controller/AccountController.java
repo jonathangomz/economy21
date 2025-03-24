@@ -29,38 +29,54 @@ public class AccountController {
 
     @GetMapping()
     public Iterable<Account> getAccounts() {
-        return this.accountManager.getAccounts();
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        return this.accountManager.getAccounts(owner);
     }
 
     @GetMapping("{accountId}")
     public Account getAccount(@PathVariable UUID accountId) {
-        return this.accountManager.getAccount(accountId);
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        return this.accountManager.getAccount(owner, accountId);
     }
 
     @PostMapping()
     public Account createAccount(@RequestBody @Valid CreateAccountDto dto) {
-        var owner = "jonathan";
-        var newAccount = this.accountManager.AddAccount(dto, owner);
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        var savedAccount = this.accountManager.AddAccount(owner, dto);
 
         var initialMovementTemplate = MovementTemplate.generateInitialMovement(dto.getTotal());
-        var savedMovement = this.movementManager.createMovement(newAccount.getId(), initialMovementTemplate);
+        var initialMovement = this.movementManager.createMovement(savedAccount.getId(), initialMovementTemplate);
+
+        this.accountManager.updateTotal(savedAccount, initialMovement.getAmount());
 
         // Not exactly the best solution but working by now
         var list = new ArrayList<Movement>();
-        list.add(savedMovement);
-        newAccount.setMovements(list);
+        list.add(initialMovement);
+        savedAccount.setMovements(list);
 
-        return newAccount;
+        return savedAccount;
     }
 
     @PostMapping("{accountId}/credit")
     public Account addCreditInformation(@PathVariable UUID accountId, @RequestBody @Valid AddCreditInformationDto dto) {
-        return this.accountManager.addCreditInformation(accountId, dto);
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        return this.accountManager.addCreditInformation(owner, accountId, dto);
     }
 
     @GetMapping("{accountId}/credit")
     public AccountCreditInformation getCreditInformation(@PathVariable UUID accountId) {
-        var account = this.accountManager.getAccount(accountId);
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        var account = this.accountManager.getAccount(owner, accountId);
         if(account.getCreditInformation() == null) {
             throw new ResourceNotFound("Credit information not found");
         }

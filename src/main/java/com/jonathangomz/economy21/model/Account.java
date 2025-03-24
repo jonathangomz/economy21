@@ -37,8 +37,8 @@ public class Account {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private List<Movement> movements;
 
-    @Column(length = 100, nullable = false)
-    private String owner;
+    @Column(length = 36, nullable = false)
+    private UUID owner;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "credit_information_id", referencedColumnName = "id", unique = true, columnDefinition = "BIGINT DEFAULT NULL")

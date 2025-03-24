@@ -33,7 +33,10 @@ public class MovementsController {
 
     @PostMapping
     public Movement addMovement(@PathVariable UUID accountId, @RequestBody @Valid CreateMovementDto dto) {
-        var account = this.accountManager.getAccount(accountId);
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        var account = this.accountManager.getAccount(owner, accountId);
 
         var createdMovement = this.movementManager.createMovement(accountId, dto);
 
@@ -44,7 +47,10 @@ public class MovementsController {
 
     @DeleteMapping("{movementId}")
     public void deleteMovement(@PathVariable UUID accountId, @PathVariable Long movementId) {
-        var account = this.accountManager.getAccount(accountId);
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        var account = this.accountManager.getAccount(owner, accountId);
 
         var deletedMovement = this.movementManager.deleteMovement(accountId, movementId);
 
