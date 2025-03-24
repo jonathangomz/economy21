@@ -1,24 +1,20 @@
 package com.jonathangomz.economy21.service;
 
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
-import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.CreateMovementDto;
 import com.jonathangomz.economy21.repository.MovementRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 @Service
 public class MovementManager {
-    private final AccountManager accountManager;
     private final MovementRepository movementRepository;
 
-    MovementManager(AccountManager accountManager, MovementRepository movementRepository) {
-        this.accountManager = accountManager;
+    MovementManager(MovementRepository movementRepository) {
         this.movementRepository = movementRepository;
     }
 
@@ -42,9 +38,6 @@ public class MovementManager {
     }
 
     public Movement createMovement(UUID accountId, CreateMovementDto dto) {
-        // Search the account
-        var account = this.accountManager.getAccount(accountId);
-
         // TODO: tags are being null
         // Map the movement from the dto
         var movement = new Movement();
@@ -56,29 +49,14 @@ public class MovementManager {
         movement.setDescription(dto.getDescription());
         movement.setAmount(dto.getAmount());
         movement.setOnline(dto.isOnline());
-        movement.setAccountId(account.getId());
+        movement.setAccountId(accountId);
 
-        // Save the movement
-        var savedMovement = this.movementRepository.save(movement);
-
-        // Update account total
-        this.updateAccountTotal(account, movement.getAmount());
-
-        // Return the saved movement
-        return savedMovement;
+        return this.movementRepository.save(movement);
     }
 
-    public void deleteMovement(UUID accountId, Long id) {
+    public Movement deleteMovement(UUID accountId, Long id) {
         var movement = this.getMovement(accountId, id);
         this.movementRepository.deleteById(movement.getId());
-
-        // Update account total
-        var account = this.accountManager.getAccount(accountId);
-        updateAccountTotal(account, movement.getAmount().negate());
-    }
-
-    private void updateAccountTotal(Account account, BigDecimal amountChange) {
-        account.setTotal(account.getTotal().add(amountChange));
-        this.accountManager.updateAccount(account.getId(), account);
+        return movement;
     }
 }

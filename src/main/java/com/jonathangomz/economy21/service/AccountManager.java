@@ -84,4 +84,9 @@ public class AccountManager {
         return this.accountRepository.save(account);
 
     }
+
+    public void updateTotal(Account account, BigDecimal amountChange) {
+        account.setTotal(account.getTotal().add(amountChange));
+        this.updateAccount(account.getId(), account);
+    }
 }
