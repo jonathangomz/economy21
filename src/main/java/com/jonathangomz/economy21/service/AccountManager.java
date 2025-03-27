@@ -69,4 +69,12 @@ public class AccountManager {
         account.setTotal(account.getTotal().add(amountChange));
         this.accountRepository.save(account);
     }
+
+    public void recalculateMonthlyDebt(Account account, BigDecimal amount) {
+        // TODO: get all movements from the current period and recalculate the total
+        var creditInformation = account.getCreditInformation();
+        var newTotal = creditInformation.getCurrentMonthPayment().add(amount);
+        creditInformation.setCurrentMonthPayment(newTotal);
+        this.accountCreditInformationRepository.save(creditInformation);
+    }
 }

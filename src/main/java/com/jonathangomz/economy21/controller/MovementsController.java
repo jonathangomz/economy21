@@ -2,6 +2,7 @@ package com.jonathangomz.economy21.controller;
 
 import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.CreateMovementDto;
+import com.jonathangomz.economy21.model.enums.AccountType;
 import com.jonathangomz.economy21.service.AccountManager;
 import com.jonathangomz.economy21.service.MovementManager;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class MovementsController {
     }
 
     @GetMapping("{movementId}")
-    public Movement getMovements(@PathVariable UUID accountId, @PathVariable long movementId) {
+    public Movement getMovement(@PathVariable UUID accountId, @PathVariable long movementId) {
         return this.movementManager.getMovement(accountId, movementId);
     }
 
@@ -41,6 +42,10 @@ public class MovementsController {
         var createdMovement = this.movementManager.createMovement(accountId, dto);
 
         this.accountManager.updateTotal(account, createdMovement.getAmount());
+
+        if(account.getType() == AccountType.CREDIT) {
+            this.accountManager.recalculateMonthlyDebt(account, createdMovement.getAmount());
+        }
 
         return createdMovement;
     }
