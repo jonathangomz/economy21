@@ -20,7 +20,6 @@ public class AccountCreditController {
         this.accountManager = accountManager;
     }
 
-    @GetMapping
     public AccountCreditInformation getCreditInformation(@PathVariable UUID accountId) {
         // TODO: Replace with user id from context
         var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
@@ -32,7 +31,6 @@ public class AccountCreditController {
         return account.getCreditInformation();
     }
 
-    @PostMapping
     public Account addCreditInformation(@PathVariable UUID accountId, @RequestBody @Valid AddCreditInformationDto dto) {
         // TODO: Replace with user id from context
         var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
