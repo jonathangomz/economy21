@@ -10,7 +10,6 @@ import com.jonathangomz.economy21.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -50,19 +49,12 @@ public class AccountManager {
 
     // TODO: Should not return any movements
     public Iterable<Account> getAccounts(UUID owner) {
-        return accountRepository.findAllActive(owner);
+        return accountRepository.findAllByOwnerAndDeletedAtIsNullAndActiveIsTrue(owner);
     }
 
     // TODO: Should return only n number of movements. Max by default 5.
     public Account getAccount(UUID owner, UUID id) {
-        // TODO: Implement StreamSupport.stream for better performance
-        var accounts = new ArrayList<Account>();
-        this.getAccounts(owner).forEach(accounts::add);
-
-        var account = accounts
-                .stream()
-                .filter(a -> a.getId().equals(id))
-                .findFirst();
+        var account = this.accountRepository.findByOwnerAndId(owner, id);
 
         if(account.isEmpty()) {
             throw new ResourceNotFound("Account not found");
@@ -71,18 +63,8 @@ public class AccountManager {
         return account.get();
     }
 
-    public void RemoveAccount(UUID id) {
-        this.accountRepository.deleteById(id);
-    }
-
-    public Account updateAccount(UUID owner, UUID id, Account dto) {
-        var account = this.getAccount(owner, id);
-        account.setName(dto.getName());
-        // TODO: Remove when using MovementListeners
-        account.setTotal(dto.getTotal());
-        account.setType(dto.getType());
+    public Account updateAccount(Account account) {
         return this.accountRepository.save(account);
-
     }
 
     public void updateTotal(Account account, BigDecimal amountChange) {

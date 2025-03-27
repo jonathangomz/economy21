@@ -12,6 +12,7 @@ import com.jonathangomz.economy21.service.MovementManager;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -63,12 +64,31 @@ public class AccountController {
         return savedAccount;
     }
 
+    @DeleteMapping("{accountId}")
+    public void deleteAccount(@PathVariable UUID accountId) {
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+        var account = this.accountManager.getAccount(owner, accountId);
+        account.setDeletedAt(LocalDateTime.now());
+        this.accountManager.updateAccount(account);
+    }
+
     @PostMapping("{accountId}/credit")
     public Account addCreditInformation(@PathVariable UUID accountId, @RequestBody @Valid AddCreditInformationDto dto) {
         // TODO: Replace with user id from context
         var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
 
         return this.accountManager.addCreditInformation(owner, accountId, dto);
+    }
+
+    @PatchMapping("{accountId}/status")
+    public Account updateAccountStatus(@PathVariable UUID accountId, boolean active) {
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        var account = this.accountManager.getAccount(owner, accountId);
+        account.setActive(active);
+        return this.accountManager.updateAccount(account);
     }
 
     @GetMapping("{accountId}/credit")

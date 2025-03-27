@@ -2,11 +2,11 @@ package com.jonathangomz.economy21.model;
 
 import com.jonathangomz.economy21.model.enums.AccountType;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -36,6 +36,9 @@ public class Account {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private List<Movement> movements;
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean active = true;
 
     @Column(length = 36, nullable = false)
     private UUID owner;
