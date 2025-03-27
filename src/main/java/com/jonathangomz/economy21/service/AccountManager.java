@@ -22,8 +22,7 @@ public class AccountManager {
         this.accountCreditInformationRepository = accountCreditInformationRepository;
     }
 
-    // TODO: rename it to addAccount
-    public Account AddAccount(UUID owner, CreateAccountDto dto) {
+    public Account createAccount(UUID owner, CreateAccountDto dto) {
         var account = new Account();
         account.setName(dto.getName());
         // TODO[linked_2]: remove setTotal

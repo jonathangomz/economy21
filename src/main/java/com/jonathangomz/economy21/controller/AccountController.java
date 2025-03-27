@@ -49,7 +49,7 @@ public class AccountController {
         // TODO: Replace with user id from context
         var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
 
-        var savedAccount = this.accountManager.AddAccount(owner, dto);
+        var savedAccount = this.accountManager.createAccount(owner, dto);
 
         var initialMovementTemplate = MovementTemplate.generateInitialMovement(dto.getTotal());
         var initialMovement = this.movementManager.createMovement(savedAccount.getId(), initialMovementTemplate);
