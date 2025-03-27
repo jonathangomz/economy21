@@ -23,8 +23,8 @@ public class AccountController {
     private final AccountManager accountManager;
     private final MovementManager movementManager;
 
-    public AccountController(AccountManager accountService, MovementManager movementManager) {
-        this.accountManager = accountService;
+    public AccountController(AccountManager accountManager, MovementManager movementManager) {
+        this.accountManager = accountManager;
         this.movementManager = movementManager;
     }
 
