@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-// TODO: Add jakarta validations
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,9 +18,10 @@ public class CreateAccountDto {
     @Size(max = 100, message = "{validation.account.name.size}")
     private String name;
 
-    @NotNull(message = "Total is required")
-    private BigDecimal total;
-
     @NotNull(message = "Type is required")
     private AccountType type;
+
+    private BigDecimal total;
+
+    private AddCreditInformationDto creditInformation;
 }

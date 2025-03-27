@@ -25,8 +25,7 @@ public class AccountManager {
     public Account createAccount(UUID owner, CreateAccountDto dto) {
         var account = new Account();
         account.setName(dto.getName());
-        // TODO[linked_2]: remove setTotal
-        account.setTotal(BigDecimal.ZERO);
+        account.setTotal(dto.getTotal());
         account.setType(dto.getType());
         account.setOwner(owner);
         return this.accountRepository.save(account);

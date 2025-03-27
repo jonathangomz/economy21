@@ -10,6 +10,7 @@ import org.hibernate.annotations.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,15 +28,15 @@ public class Account {
     private String name;
 
     // TODO[linked_2]: Add 0 by default
-    @Column(precision = 10, scale = 2, nullable = false)
-    private BigDecimal total;
+    @Column(precision = 10, scale = 2, nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0")
+    private BigDecimal total = BigDecimal.ZERO;
 
     @Column(nullable = false)
     private AccountType type;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private List<Movement> movements;
+    private List<Movement> movements = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean active = true;

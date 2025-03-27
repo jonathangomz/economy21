@@ -3,17 +3,14 @@ package com.jonathangomz.economy21.controller;
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.AccountCreditInformation;
-import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.AddCreditInformationDto;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
-import com.jonathangomz.economy21.model.dtos.MovementTemplate;
+import com.jonathangomz.economy21.model.enums.AccountType;
 import com.jonathangomz.economy21.service.AccountManager;
-import com.jonathangomz.economy21.service.MovementManager;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -21,11 +18,9 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountManager accountManager;
-    private final MovementManager movementManager;
 
-    public AccountController(AccountManager accountManager, MovementManager movementManager) {
+    public AccountController(AccountManager accountManager) {
         this.accountManager = accountManager;
-        this.movementManager = movementManager;
     }
 
     @GetMapping()
@@ -49,17 +44,24 @@ public class AccountController {
         // TODO: Replace with user id from context
         var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
 
+        if(dto.getType() == AccountType.CREDIT) {
+            if (dto.getCreditInformation() == null) {
+                // TODO: throw a validation error. Credit accounts need credit information
+            } else {
+                dto.setTotal(dto.getCreditInformation().getCreditLimit());
+            }
+        }
+        else {
+            if(dto.getTotal() == null) {
+                // TODO: throw a validation error. Debit accounts need an initial total
+            }
+        }
+        
         var savedAccount = this.accountManager.createAccount(owner, dto);
 
-        var initialMovementTemplate = MovementTemplate.generateInitialMovement(dto.getTotal());
-        var initialMovement = this.movementManager.createMovement(savedAccount.getId(), initialMovementTemplate);
-
-        this.accountManager.updateTotal(savedAccount, initialMovement.getAmount());
-
-        // Not exactly the best solution but working by now
-        var list = new ArrayList<Movement>();
-        list.add(initialMovement);
-        savedAccount.setMovements(list);
+        if(dto.getType() == AccountType.CREDIT) {
+            this.accountManager.addCreditInformation(owner, savedAccount.getId(), dto.getCreditInformation());
+        }
 
         return savedAccount;
     }
