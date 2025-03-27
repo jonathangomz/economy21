@@ -5,6 +5,7 @@ import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.AccountCreditInformation;
 import com.jonathangomz.economy21.model.dtos.AddCreditInformationDto;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
+import com.jonathangomz.economy21.model.dtos.UpdateAccountDto;
 import com.jonathangomz.economy21.model.enums.AccountType;
 import com.jonathangomz.economy21.service.AccountManager;
 import jakarta.validation.Valid;
@@ -64,6 +65,16 @@ public class AccountController {
         }
 
         return savedAccount;
+    }
+    
+    @PutMapping("{accountId}")
+    public Account updateAccount(@PathVariable UUID accountId, @RequestBody @Valid UpdateAccountDto dto) {
+        // TODO: Replace with user id from context
+        var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
+
+        var account = this.accountManager.getAccount(owner, accountId);
+        account.setName(dto.getName());
+        return this.accountManager.updateAccount(account);
     }
 
     @DeleteMapping("{accountId}")
