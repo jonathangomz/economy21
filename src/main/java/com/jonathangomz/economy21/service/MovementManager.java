@@ -38,7 +38,6 @@ public class MovementManager {
     }
 
     public Movement createMovement(UUID accountId, CreateMovementDto dto) {
-        // TODO: tags are being null
         // Map the movement from the dto
         var movement = new Movement();
         movement.setType(dto.getType());
