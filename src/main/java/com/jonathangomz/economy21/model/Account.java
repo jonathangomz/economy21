@@ -27,7 +27,6 @@ public class Account {
     @Column(length = 100, nullable = false)
     private String name;
 
-    // TODO[linked_2]: Add 0 by default
     @Column(precision = 10, scale = 2, nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0")
     private BigDecimal total = BigDecimal.ZERO;
 
