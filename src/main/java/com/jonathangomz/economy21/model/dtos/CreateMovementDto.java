@@ -3,10 +3,7 @@ package com.jonathangomz.economy21.model.dtos;
 import com.jonathangomz.economy21.model.enums.MovementSubtype;
 import com.jonathangomz.economy21.model.enums.MovementType;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +31,7 @@ public class CreateMovementDto {
     private String commerce;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    // TODO: Do not allow add a date greater than today
+    @PastOrPresent(message = "The date cannot be in the future")
     private LocalDate date = LocalDate.now();
 
     @NotBlank(message = "Title is required")
