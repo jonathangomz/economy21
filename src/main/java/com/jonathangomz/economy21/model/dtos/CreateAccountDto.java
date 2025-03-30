@@ -1,9 +1,7 @@
 package com.jonathangomz.economy21.model.dtos;
 
 import com.jonathangomz.economy21.model.enums.AccountType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +19,19 @@ public class CreateAccountDto {
     @NotNull(message = "Type is required")
     private AccountType type;
 
+    @NotNull(message = "Total is required")
+    @Min(value = 0, message = "Total must be greater than or equal to zero")
     private BigDecimal total;
 
-    private AddCreditInformationDto creditInformation;
+    @Min(value = 1, message = "{validation.cutoffDay.min}")
+    @Max(value = 31, message = "{validation.cutoffDay.max}")
+    private Integer cutoffDay;
+
+    @Min(value = 1, message = "{validation.intervalPaymentLimit.min}")
+    @Max(value = 30, message = "{validation.intervalPaymentLimit.max}")
+    private Integer intervalPaymentLimit;
+
+    public int getIntervalPaymentLimit() {
+        return this.intervalPaymentLimit == null ? 20 : this.intervalPaymentLimit;
+    }
 }

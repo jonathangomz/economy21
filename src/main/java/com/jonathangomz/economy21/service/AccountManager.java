@@ -3,7 +3,6 @@ package com.jonathangomz.economy21.service;
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.AccountCreditInformation;
-import com.jonathangomz.economy21.model.dtos.AddCreditInformationDto;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.repository.AccountCreditInformationRepository;
 import com.jonathangomz.economy21.repository.AccountRepository;
@@ -31,7 +30,7 @@ public class AccountManager {
         return this.accountRepository.save(account);
     }
 
-    public Account addCreditInformation(UUID owner, UUID accountId, AddCreditInformationDto dto) {
+    public void addCreditInformation(UUID owner, UUID accountId, AccountCreditInformation dto) {
         var account = this.getAccount(owner, accountId);
 
         var creditInformation = new AccountCreditInformation();
@@ -42,7 +41,7 @@ public class AccountManager {
         var saved = this.accountCreditInformationRepository.save(creditInformation);
         account.setCreditInformation(saved);
 
-        return this.accountRepository.save(account);
+        this.accountRepository.save(account);
     }
 
     // TODO: Should not return any movements

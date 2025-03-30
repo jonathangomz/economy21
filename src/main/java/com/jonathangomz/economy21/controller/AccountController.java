@@ -1,6 +1,8 @@
 package com.jonathangomz.economy21.controller;
 
+import com.jonathangomz.economy21.exceptions.InvalidField;
 import com.jonathangomz.economy21.model.Account;
+import com.jonathangomz.economy21.model.AccountCreditInformation;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
 import com.jonathangomz.economy21.model.dtos.UpdateAccountDto;
 import com.jonathangomz.economy21.model.enums.AccountType;
@@ -43,22 +45,19 @@ public class AccountController {
         var owner = UUID.fromString("e7dc9147-7c56-4a41-912d-8c8e9ef3a1e8");
 
         if(dto.getType() == AccountType.CREDIT) {
-            if (dto.getCreditInformation() == null) {
-                // TODO: throw a validation error. Credit accounts need credit information
-            } else {
-                dto.setTotal(dto.getCreditInformation().getCreditLimit());
-            }
-        }
-        else {
-            if(dto.getTotal() == null) {
-                // TODO: throw a validation error. Debit accounts need an initial total
+            if (dto.getCutoffDay() == null) {
+                throw new InvalidField("Cutoff day is required for credit accounts");
             }
         }
         
         var savedAccount = this.accountManager.createAccount(owner, dto);
 
         if(dto.getType() == AccountType.CREDIT) {
-            this.accountManager.addCreditInformation(owner, savedAccount.getId(), dto.getCreditInformation());
+            var creditInformation = new AccountCreditInformation();
+            creditInformation.setCreditLimit(dto.getTotal());
+            creditInformation.setCutoffDay(dto.getCutoffDay());
+            creditInformation.setIntervalPaymentLimit(dto.getIntervalPaymentLimit());
+            this.accountManager.addCreditInformation(owner, savedAccount.getId(), creditInformation);
         }
 
         return savedAccount;

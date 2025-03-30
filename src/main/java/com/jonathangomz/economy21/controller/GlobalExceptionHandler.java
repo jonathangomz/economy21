@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.controller;
 
+import com.jonathangomz.economy21.exceptions.InvalidField;
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFound.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFound e) {
         var errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidField.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(InvalidField e) {
+        var errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
