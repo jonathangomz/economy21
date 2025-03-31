@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.model.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jonathangomz.economy21.model.enums.MovementSubtype;
 import com.jonathangomz.economy21.model.enums.MovementType;
 
@@ -49,4 +50,9 @@ public class CreateMovementDto {
     @Min(value = 1, message = "Deferral months must be greater than or equal to 1")
     @Max(value = 240, message = "Months must be less than or equal to 240")
     private Integer deferralMonths = null;
+
+    @JsonIgnore
+    public boolean isCharge() {
+        return this.type == MovementType.CHARGE;
+    }
 }
