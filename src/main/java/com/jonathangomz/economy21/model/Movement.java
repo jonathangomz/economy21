@@ -1,8 +1,10 @@
 package com.jonathangomz.economy21.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jonathangomz.economy21.model.enums.MovementSubtype;
 import com.jonathangomz.economy21.model.enums.MovementType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -58,9 +60,12 @@ public class Movement {
     @Column(nullable = false)
     private boolean online = false;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "credit_information_id", referencedColumnName = "id", unique = true, columnDefinition = "BIGINT DEFAULT NULL")
-    private MovementCreditInformation creditInformation;
+    @Column(columnDefinition = "BOOLEAN DEFAULT NULL")
+    private Boolean settled;
+
+    @Column(columnDefinition = "INTEGER DEFAULT NULL")
+    @Max(240)
+    private int deferralMonths;
 
     @Column(name = "account_id", nullable = false)
     private UUID accountId;
@@ -78,5 +83,11 @@ public class Movement {
             return this.amount;
         }
         return this.amount.negate();
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean isCharge() {
+        return this.type == MovementType.CHARGE;
     }
 }

@@ -40,7 +40,7 @@ public class MovementsController {
         var account = this.accountManager.getAccount(owner, accountId);
 
         // TODO: Cannot create movement is do not have enough money on the account
-        var createdMovement = this.movementManager.createMovement(accountId, dto);
+        var createdMovement = this.movementManager.createMovement(accountId, dto, account.isDebit());
 
         this.accountManager.updateTotal(account, createdMovement.getAmount());
 

@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jonathangomz.economy21.model.enums.AccountType;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
@@ -83,5 +84,17 @@ public class Account {
                         m.getAmount().compareTo(BigDecimal.ZERO) < 0)
                 .map(Movement::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @JsonIgnore
+    @Transient
+    public boolean isCredit() {
+        return this.type == AccountType.CREDIT;
+    }
+
+    @JsonIgnore
+    @Transient
+    public boolean isDebit() {
+        return this.type == AccountType.DEBIT;
     }
 }

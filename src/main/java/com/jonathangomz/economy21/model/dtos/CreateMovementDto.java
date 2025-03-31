@@ -45,4 +45,8 @@ public class CreateMovementDto {
     private BigDecimal amount;
 
     private boolean online = false;
+
+    @Min(value = 1, message = "Deferral months must be greater than or equal to 1")
+    @Max(value = 240, message = "Months must be less than or equal to 240")
+    private Integer deferralMonths = null;
 }

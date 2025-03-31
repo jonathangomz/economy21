@@ -37,9 +37,10 @@ public class MovementManager {
         return movement.get();
     }
 
-    public Movement createMovement(UUID accountId, CreateMovementDto dto) {
+    public Movement createMovement(UUID accountId, CreateMovementDto dto, boolean accountIsDebit) {
         // Map the movement from the dto
         var movement = new Movement();
+        movement.setAccountId(accountId);
         movement.setType(dto.getType());
         movement.setSubtype(dto.getSubtype());
         movement.setCommerce(dto.getCommerce());
@@ -48,7 +49,16 @@ public class MovementManager {
         movement.setDescription(dto.getDescription());
         movement.setAmount(dto.getAmount());
         movement.setOnline(dto.isOnline());
-        movement.setAccountId(accountId);
+        movement.setDeferralMonths(dto.getDeferralMonths());
+
+        // If movement is NOT a charge the default value is null
+        if(movement.isCharge()) {
+            if(dto.getDeferralMonths() > 0) {
+                movement.setSettled(false);
+            }else {
+                movement.setSettled(accountIsDebit);
+            }
+        }
 
         return this.movementRepository.save(movement);
     }
