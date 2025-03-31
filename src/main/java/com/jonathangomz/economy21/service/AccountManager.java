@@ -4,6 +4,7 @@ import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import com.jonathangomz.economy21.model.Account;
 import com.jonathangomz.economy21.model.AccountCreditInformation;
 import com.jonathangomz.economy21.model.dtos.CreateAccountDto;
+import com.jonathangomz.economy21.model.mappers.AccountMapper;
 import com.jonathangomz.economy21.repository.AccountCreditInformationRepository;
 import com.jonathangomz.economy21.repository.AccountRepository;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,16 @@ import java.util.UUID;
 public class AccountManager {
     private final AccountRepository accountRepository;
     private final AccountCreditInformationRepository accountCreditInformationRepository;
+    private final AccountMapper accountMapper;
 
-    public AccountManager(AccountRepository accountRepository, AccountCreditInformationRepository accountCreditInformationRepository) {
+    public AccountManager(AccountRepository accountRepository, AccountCreditInformationRepository accountCreditInformationRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
         this.accountCreditInformationRepository = accountCreditInformationRepository;
+        this.accountMapper = accountMapper;
     }
 
     public Account createAccount(UUID owner, CreateAccountDto dto) {
-        var account = new Account();
-        account.setName(dto.getName());
-        account.setTotal(dto.getTotal());
-        account.setType(dto.getType());
+        var account = accountMapper.createDtoToEntity(dto);
         account.setOwner(owner);
         return this.accountRepository.save(account);
     }
