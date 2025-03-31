@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.controller;
 
+import com.jonathangomz.economy21.exceptions.InsufficientBalance;
 import com.jonathangomz.economy21.exceptions.InvalidField;
 import com.jonathangomz.economy21.exceptions.ResourceNotFound;
 import lombok.Data;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidField.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(InvalidField e) {
         var errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY.value());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(InsufficientBalance.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientBalance(InsufficientBalance e) {
+        var errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

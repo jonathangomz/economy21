@@ -1,5 +1,6 @@
 package com.jonathangomz.economy21.controller;
 
+import com.jonathangomz.economy21.exceptions.InsufficientBalance;
 import com.jonathangomz.economy21.model.Movement;
 import com.jonathangomz.economy21.model.dtos.CreateMovementDto;
 import com.jonathangomz.economy21.model.enums.AccountType;
@@ -39,7 +40,10 @@ public class MovementsController {
 
         var account = this.accountManager.getAccount(owner, accountId);
 
-        // TODO: Cannot create movement is do not have enough money on the account
+        if(dto.isCharge() && account.getTotal().compareTo(dto.getAmount()) < 0) {
+            throw new InsufficientBalance("Insufficient balance");
+        }
+
         var createdMovement = this.movementManager.createMovement(accountId, dto, account.isDebit());
 
         this.accountManager.updateTotal(account, createdMovement.getAmount());
