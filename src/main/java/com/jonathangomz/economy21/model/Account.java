@@ -62,10 +62,6 @@ public class Account {
     // TODO[linked_1]: Add this field to the AccountCreditInformation class
     private BigDecimal currentMonthPayment = null;
 
-    public List<Movement> getMovements() {
-        return movements == null ? List.of() : movements;
-    }
-
     // TODO[linked_1]: Add this field to the AccountCreditInformation class
     public BigDecimal getCurrentMonthPayment() {
         // TODO: Update column on AccountCreditInformation
