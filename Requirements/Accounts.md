@@ -2,28 +2,12 @@
 
 ## Index
 1. [Get all](#get-all)
-   1. [Description](#description)
 2. [Get single](#get-single)
-   1. [Description](#description-1)
 3. [Create](#create)
-   1. [Description](#description-2)
-      1. [Debit](#debit)
-      2. [Credit](#credit)
-   2. [Fields and Validations](#fields-and-validations)
-   3. [Notes](#notes)
 4. [Update](#update)
-   1. [Description](#description-3)
-   2. [Fields and Validations](#fields-and-validations-1)
 5. [Update credit information](#update-credit-information)
-   1. [Description](#description-4)
-      1. [`creditLimit`](#creditlimit)
-      2. [`cutoffDay` & `intervalPaymentLimit`](#cutoffday--intervalpaymentlimit)
-   2. [Fields and Validations](#fields-and-validations-2)
 6. [Inactive](#inactivate)
-   1. [Description](#description-5)
-   2. [Fields and Validations](#fields-and-validations-3)
 7. [Delete](#delete)
-   1. [Description](#description-6)
 
 ## Get all
 > 🧭️ `GET: /api/accounts`
@@ -31,11 +15,25 @@
 ### Description
 Retrieves all the user accounts.
 
+### Responses
+
+| Code | Description | Returns           |
+|------|-------------|-------------------|
+| 200  | Ok          | An `Account` list |
+
 ## Get single
 > 🧭️ `GET: /api/accounts/{accountId}`
 
 ### Description
-Retrieves a single user accounts.
+Retrieves a single user account.
+
+### Responses
+
+| Code | Description                                                 | Returns              |
+|------|-------------------------------------------------------------|----------------------|
+| 200  | Ok                                                          | An `Account`         |
+| 404  | No account {accountId} was found for the authenticated user | An `NotFoundContent` |
+
 
 ## Create
 > 🧭️ `POST: /api/accounts`
